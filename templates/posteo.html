@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario de Atención de Falla</title>
+    <link rel="stylesheet" href="/static/estilos.css" />
+    <script src="/static/login.js"></script>
+    <script src="/static/botones.js"></script>
+  </head>
+
+  <body>
+    <h1>Bienvenido a la página de posteo</h1>
+    
+    <!-- Formulario de relleno manual -->
+    <form id="scraping-form" action="/scrape" method="POST">
+      <legend>relleno manual</legend>
+
+      <label for="tuNombre">Tu Nombre:</label>
+      <select id="tuNombre" name="tuNombre" required>
+        <option value="Emmanuel Lopez">Emmanuel Lopez</option>
+        <option value="Irving Navarro">Irving Navarro</option>
+      </select>
+
+      <label for="tipoFalla">Tipo de Falla:</label>
+      <select id="tipoFalla" name="tipoFalla" required>
+        <option value="TOTAL">TOTAL</option>
+        <option value="PARCIAL">PARCIAL</option>
+        <option value="MCA">MCA</option>
+        <option value="Enlace">Enlace</option>
+        <option value="MCA REQ Serv">MCA REQ Serv</option>
+        <option value="SNR">SNR</option>
+        <option value="MASIVA">MASIVA</option>
+      </select>
+
+      <label for="numeroTT">Número de Ticket:</label>
+      <input type="text" id="numeroTT" name="numeroTT" required />
+      <br />
+      <label for="folioOT">#Folio OT:</label>
+      <input type="text" id="folioOT" name="folioOT" required />
+
+      <label for="clientesAfectados">Clientes Afectados:</label>
+      <input type="text" id="clientesAfectados" name="clientesAfectados" required />
+
+      <label for="coordenadas">Coordenadas:</label>
+      <input type="text" id="coordenadas" name="coordenadas" required />
+
+      <label for="ctcHub">CTC o Hub:</label>
+      <input type="text" id="ctcHub" name="ctcHub" placeholder="opcional" />
+
+      <label for="alarma">Alarma:</label>
+      <input type="text" id="alarma" name="alarma" placeholder="opcional" />
+      <button type="submit">Enviar</button>
+    </form>
+
+    <form id="fallasForm">
+
+      <fieldset>
+        <legend>relleno automatico</legend>
+        <label for="tiempoTrascurriodeTT"
+          >Tiempo Trascurrio desde genracion de TT</label
+        >
+        <input
+          type="text"
+          id="tiempoTrascurriodeTT"
+          name="tiempoTrascurriodeTT"
+          placeholder="se rellena solo"
+          required
+        />
+
+        <label for="numeroSucursal">Número de Sucursal:</label>
+        <input
+          type="text"
+          id="numeroSucursal"
+          name="numeroSucursal"
+          placeholder="se rellena solo"
+          required
+        />
+
+        <label for="sucursal">Sucursal:</label>
+        <input
+          type="text"
+          id="sucursal"
+          name="sucursal"
+          placeholder="se rellena solo"
+          required
+        />
+
+        <label for="tituloFalla">Título de la Falla:</label>
+        <input
+          type="text"
+          id="tituloFalla"
+          name="tituloFalla"
+          placeholder="se rellena solo"
+          required
+        />
+
+        <!--placeholder="HH:MM:SS"-->
+
+        <label for="ticketCherwell">#Ticket Cherwell:</label>
+        <input
+          type="text"
+          id="ticketCherwell"
+          name="ticketCherwell"
+          placeholder="se rellena solo"
+          required
+        />
+
+        <label for="nodoPuerto">#Nodo o Puerto:</label>
+        <input
+          type="text"
+          id="nodoPuerto"
+          name="nodoPuerto"
+          placeholder="se rellena solo"
+          required
+        />
+
+        <label for="tiempoTrascurriod">Tiempo Trascurriod</label>
+        <input
+          type="text"
+          id="tiempoTrascurriod"
+          name="tiempoTrascurriod"
+          placeholder="se rellena solo"
+          required
+        />
+
+        <label for="horaReporte"
+          >Fecha de generacion y hora de generacion de OT:</label
+        >
+        <input
+          type="text"
+          id="horaReporte"
+          name="horaReporte"
+          placeholder="YYYY-MM-DD HH:mm:ss"
+          required
+        />
+
+        <label for="fechaCreacion"
+          >Fecha de Creación y hora de creacion TT:</label
+        >
+        <input
+          type="text"
+          id="fechaCreacion"
+          name="fechaCreacion"
+          placeholder="se rellena solo"
+          required
+        />
+        <label for="datosSGA">Datos SGA:</label>
+        <textarea id="datosSGA" name="datosSGA" rows="2"></textarea>
+      </fieldset>
+
+      <fieldset>
+        <label for="datosAdicionales">Datos Adicionales:</label>
+        <textarea
+          id="datosAdicionales"
+          name="datosAdicionales"
+          rows="4"
+        ></textarea>
+      </fieldset>
+
+      <fieldset>
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+          <option value="1">De su apoyo para la atención</option>
+          <option value="2">
+            Cliente confirma que cuenta con energía eléctrica
+          </option>
+          <option value="3">Se confirma ausencia de CFE</option>
+          <option value="4">
+            Cliente no contesta de su apoyo para la atención
+          </option>
+          <option value="5">
+            Zona conflictiva de su apoyo para la atención a primera hora de la
+            mañana
+          </option>
+          <option value="6">
+            Sin personal nocturno de su apoyo para la atención a primera hora de
+            la mañana
+          </option>
+          <option value="7">Mal clima en la zona</option>
+          <option value="8">Clientes no se encuentran en domicilio</option>
+        </select>
+      </fieldset>
+
+      <button type="submit">Enviar</button>
+
+      <!-- Botón para abrir el diálogo -->
+      <button type="button" id="abrirDialogo">Abrir Diálogo</button>
+
+      <!-- El diálogo que se abrirá -->
+      <dialog id="miDialogo" closedby="any">
+        <p>Este es el contenido de tu diálogo.</p>
+        <!-- Botón para cerrar el diálogo -->
+        <button type="button" id="cerrarDialogo">Cerrar</button>
+      </dialog>
+    </form>
+
+    <!-- Botón para cerrar sesión -->
+    <button onclick="logout()">Cerrar sesión</button>
+
+    <script>
+      // Función para cerrar sesión
+      function logout() {
+        // Eliminar la sesión del navegador
+        localStorage.removeItem("usuario");
+
+        // Redirigir al inicio de sesión
+        window.location.href = "/";
+      }
+    </script>
+  </body>
+</html>
