@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario de Atención de Falla</title>
+    <link rel="stylesheet" href="/static/estilos.css" />
+    <script src="/static/login.js"></script>
+    <script src="/static/botones.js"></script>
+  </head>
+
+  <body>
+    <h1>Bienvenido a la página de posteo</h1>
+    
+    <!-- Formulario de relleno manual -->
+    <form id="scraping-form" action="/scrape" method="POST">
+      <h1>consultar TT</h1>
+
+      <label for="numeroTT">Número de Ticket:</label>
+      <input type="text" id="numeroTT" name="numeroTT" required />
+        <br />
+        <input type="submit" value="Consultar" />
+    </form>
+ <!-- Botón para cerrar sesión -->
+ <button onclick="logout()">Cerrar sesión</button>
+
+</body>
+</html>

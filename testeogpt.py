@@ -16,13 +16,14 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("iniciarSesion.html")  # Página de inicio de sesión  
+    return render_template("consulta.html")  # Página de inicio de sesión  
+datos = {}  # Variable global para almacenar los datos obtenidos
 
 @app.route("/scrape", methods=["POST"])
 def scrape():
     # Verifica que los datos del formulario se reciban correctamente
-    usuario = request.form.get("usuario")
-    contrasena = request.form.get("contrasena")
+    usuario = "elorenzo" #request.form.get("usuario")
+    contrasena = "pinolillo123"#request.form.get("contrasena")
     numeroTT = request.form.get("numeroTT")
 
     if not usuario or not contrasena or not numeroTT:
@@ -115,7 +116,7 @@ def scrape():
         minutos_diferencia = (diferencia_segundos % (60 * 60)) // 60
         segundos_diferencia = diferencia_segundos % 60
 
-        tiempoTrascurriodeTT = (f"Diferencia: {diferencia_dias} días, {horas_diferencia} horas, "
+        tiempoTrascurriodeTT = (f"Diferencia: {diferencia_dias} dias, {horas_diferencia} horas, "
                                 f"{minutos_diferencia} minutos, {segundos_diferencia} segundos")
 
     # Cálculo de diferencia entre fechaAlarm y la fecha más reciente de SGA
@@ -128,28 +129,29 @@ def scrape():
         minutos_diferencia2 = (diferencia_segundos % (60 * 60)) // 60
         segundos_diferencia2 = diferencia_segundos % 60
 
-        tiempoTrascurriodeTTyOT = (f"Diferencia: {diferencia_dias2} días, {horas_diferencia2} horas, "
+        tiempoTrascurriodeTTyOT = (f"Diferencia: {diferencia_dias2} dias, {horas_diferencia2} horas, "
                                    f"{minutos_diferencia2} minutos, {segundos_diferencia2} segundos")
 
     # Procesar los datos obtenidos
-    data = {
-        "ticketId": ticketId,
+    datos = {
+        "numeroTT": ticketId,
         "fechaAlarm": fechaAlarm,
         "descripcion": descripcion,
-        "titulo": titulo,
-        "nodo": nodo,
-        "sistema": sistema,
-        "numSucursal": numSucursal,
-        "sga": sga,
-        "fechaDetectadaOT": str(fecha_detectadaOT) if fecha_detectadaOT else "No se detectó una fecha",
+        "tituloFalla": titulo,
+        "nodoPuerto": nodo,
+        "sucursal": sistema,
+        "numeroSucursal": numSucursal,
+        "datosSGA": sga,
+        "fechaDetectadaOTEnSGA": str(fecha_detectadaOT) if fecha_detectadaOT else "No se detectó una fecha",
         "tiempoDeTT": tiempoTrascurriodeTT,
         "tiempoDeTTyOT": tiempoTrascurriodeTTyOT,
     }
-    return jsonify(data)  # Retornar los datos como JSON
+    return jsonify(datos)  #render_template("posteo.html",data=data) Retornar los datos como JSON
+
 
 @app.route("/posteo")
 def posteo():
-    return render_template("posteo.html")  # Página de posteo
+    return render_template("posteo.html",data=datos)  # Página de posteo
 
 if __name__ == "__main__":
     app.run(debug=True)

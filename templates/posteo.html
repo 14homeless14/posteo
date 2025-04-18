@@ -13,7 +13,7 @@
     <h1>Bienvenido a la página de posteo</h1>
     
     <!-- Formulario de relleno manual -->
-    <form id="scraping-form" action="/scrape" method="POST">
+    <form id="datosDePosteo" action="/posteo" method="POST">
       <legend>relleno manual</legend>
 
       <label for="tuNombre">Tu Nombre:</label>
@@ -32,18 +32,15 @@
         <option value="SNR">SNR</option>
         <option value="MASIVA">MASIVA</option>
       </select>
-
-      <label for="numeroTT">Número de Ticket:</label>
-      <input type="text" id="numeroTT" name="numeroTT" required />
       <br />
       <label for="folioOT">#Folio OT:</label>
-      <input type="text" id="folioOT" name="folioOT" required />
+      <input type="text" id="folioOT" name="folioOT"  />
 
       <label for="clientesAfectados">Clientes Afectados:</label>
-      <input type="text" id="clientesAfectados" name="clientesAfectados" required />
+      <input type="text" id="clientesAfectados" name="clientesAfectados"  />
 
       <label for="coordenadas">Coordenadas:</label>
-      <input type="text" id="coordenadas" name="coordenadas" required />
+      <input type="text" id="coordenadas" name="coordenadas"  />
 
       <label for="ctcHub">CTC o Hub:</label>
       <input type="text" id="ctcHub" name="ctcHub" placeholder="opcional" />
@@ -54,108 +51,42 @@
     </form>
 
     <form id="fallasForm">
-
       <fieldset>
         <legend>relleno automatico</legend>
-        <label for="tiempoTrascurriodeTT"
-          >Tiempo Trascurrio desde genracion de TT</label
-        >
-        <input
-          type="text"
-          id="tiempoTrascurriodeTT"
-          name="tiempoTrascurriodeTT"
-          placeholder="se rellena solo"
-          required
-        />
+        <label for="tiempoDeTT">Tiempo Trascurrio desde generacion de TT</label>
+        <input type="text" id="tiempoDeTT" name="tiempoDeTT" placeholder="se rellena solo"required/>
 
-        <label for="numeroSucursal">Número de Sucursal:</label>
-        <input
-          type="text"
-          id="numeroSucursal"
-          name="numeroSucursal"
-          placeholder="se rellena solo"
-          required
-        />
+        <label for="numSucursal">Número de Sucursal:</label>
+        <input type="text" id="numSucursal" name="numSucursal" placeholder="se rellena solo" required/>
 
         <label for="sucursal">Sucursal:</label>
-        <input
-          type="text"
-          id="sucursal"
-          name="sucursal"
-          placeholder="se rellena solo"
-          required
-        />
+        <input type="text" id="sucursal" name="sucursal" placeholder="se rellena solo" required/>
 
         <label for="tituloFalla">Título de la Falla:</label>
-        <input
-          type="text"
-          id="tituloFalla"
-          name="tituloFalla"
-          placeholder="se rellena solo"
-          required
-        />
+        <input type="text" id="tituloFalla" name="tituloFalla" placeholder="se rellena solo" required/>
 
         <!--placeholder="HH:MM:SS"-->
 
-        <label for="ticketCherwell">#Ticket Cherwell:</label>
-        <input
-          type="text"
-          id="ticketCherwell"
-          name="ticketCherwell"
-          placeholder="se rellena solo"
-          required
-        />
+        <label for="numeroTT">#Ticket Cherwell:</label>
+        <input type="text" id="numeroTT" name="numeroTT" placeholder="se rellena solo" required/>
 
-        <label for="nodoPuerto">#Nodo o Puerto:</label>
-        <input
-          type="text"
-          id="nodoPuerto"
-          name="nodoPuerto"
-          placeholder="se rellena solo"
-          required
-        />
+        <label for="nodo">#Nodo o Puerto:</label>
+        <input type="text" id="nodo" name="nodo" placeholder="se rellena solo" required/>
 
-        <label for="tiempoTrascurriod">Tiempo Trascurriod</label>
-        <input
-          type="text"
-          id="tiempoTrascurriod"
-          name="tiempoTrascurriod"
-          placeholder="se rellena solo"
-          required
-        />
+        <label for="fechaDetectadaOTEnSGA">Fecha de generacion y hora de generacion de OT:</label>
+        <input type="text" id="fechaDetectadaOTEnSGA" name="fechaDetectadaOTEnSGA" placeholder="YYYY-MM-DD HH:mm:ss" required />
 
-        <label for="horaReporte"
-          >Fecha de generacion y hora de generacion de OT:</label
-        >
-        <input
-          type="text"
-          id="horaReporte"
-          name="horaReporte"
-          placeholder="YYYY-MM-DD HH:mm:ss"
-          required
-        />
-
-        <label for="fechaCreacion"
-          >Fecha de Creación y hora de creacion TT:</label
-        >
-        <input
-          type="text"
-          id="fechaCreacion"
-          name="fechaCreacion"
-          placeholder="se rellena solo"
-          required
-        />
-        <label for="datosSGA">Datos SGA:</label>
-        <textarea id="datosSGA" name="datosSGA" rows="2"></textarea>
-      </fieldset>
+        <label for="fechaAlarm">Fecha de Creación y hora de creacion TT:</label>
+        <input type="text" id="fechaAlarm" name="fechaAlarm" placeholder="se rellena solo" required/>
+        
+        <label for="sga">Datos SGA:</label>
+        <textarea id="sga" name="sga" rows="2"></textarea>
+        <br />
+        <textarea id="descripcion" name="descripcion" rows="2" style="display: none;"></textarea>      </fieldset>
 
       <fieldset>
         <label for="datosAdicionales">Datos Adicionales:</label>
-        <textarea
-          id="datosAdicionales"
-          name="datosAdicionales"
-          rows="4"
-        ></textarea>
+        <textarea id="datosAdicionales" name="datosAdicionales" rows="4"></textarea>
       </fieldset>
 
       <fieldset>
@@ -199,13 +130,12 @@
     <button onclick="logout()">Cerrar sesión</button>
 
     <script>
-      // Función para cerrar sesión
-      function logout() {
-        // Eliminar la sesión del navegador
-        localStorage.removeItem("usuario");
-
-        // Redirigir al inicio de sesión
-        window.location.href = "/";
+       // Flask convierte el diccionario Python en un objeto JS
+       const rellena = { dato | tojson | safe };
+      // Rellenamos los campos con los valores del JSON
+      for (const campo in rellena) {
+      const input = document.getElementById(campo);
+       if (input) input.value = rellena[campo];
       }
     </script>
   </body>
