@@ -1,71 +1,50 @@
-from flask import Flask, request, redirect, session, render_template
+from flask import Flask, render_template, request, redirect
 import mysql.connector
-import bcrypt
 
-# Inicialización de la aplicación Flask
+# Crear la aplicación Flask
 app = Flask(__name__)
-# Clave secreta para manejar las sesiones de usuario
-app.secret_key = "clave_secreta_super_segura"
 
-# Conexión a la base de datos MySQL
-db = mysql.connector.connect(
-    host="localhost",       # Dirección del servidor de la base de datos
-    user="tu_usuario",      # Usuario de la base de datos
-    password="tu_contraseña",  # Contraseña del usuario
-    database="mi_base_de_datos"  # Nombre de la base de datos
-)
+# Función para verificar las credenciales del usuario en la base de datos
+def verificar_usuario(usuario, clave):
+    # Conexión a la base de datos MySQL
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="123456",  # 🔒 Cambia esto por tu contraseña real
+        database="registroReportes"  # Asegúrate de que esta base de datos exista
+    )
+    cursor = conn.cursor()
 
-# Ruta para la página principal (GET)
-@app.route('/', methods=['GET'])
-def login_page():
-    """
-    Renderiza la página de inicio de sesión.
-    """
-    return render_template("login.html")
+    # Consulta para verificar si el usuario existe con esa clave
+    cursor.execute("SELECT * FROM usuarios WHERE usuario = %s AND clave = %s", (usuario, clave))
 
-# Ruta para manejar el inicio de sesión (POST)
+    resultado = cursor.fetchone()  # Devuelve la primera coincidencia (o None si no hay)
+    conn.close()
+
+    return resultado is not None  # Devuelve True si encontró al usuario
+
+# Ruta raíz (muestra el formulario de login)
+@app.route('/')
+def index():
+    return render_template('login.html')  # El archivo debe estar en /templates
+
+# Ruta que procesa los datos del formulario
 @app.route('/login', methods=['POST'])
 def login():
-    """
-    Maneja el inicio de sesión del usuario.
-    - Obtiene el nombre de usuario y la contraseña desde el formulario.
-    - Verifica las credenciales contra la base de datos.
-    - Si las credenciales son válidas, inicia sesión y redirige al área de posteo.
-    - Si no son válidas, devuelve un error 401.
-    """
-    usuario = request.form['usuario']  # Nombre de usuario ingresado
-    contrasena = request.form['contrasena']  # Contraseña ingresada
+    usuario = request.form['userSGA']  # Obtiene el valor del input con name="usuario"
+    clave = request.form['passwordSGA']      # Obtiene la clave
 
-    # Consulta a la base de datos para obtener la contraseña del usuario
-    cursor = db.cursor()
-    cursor.execute("SELECT contrasena FROM usuarios WHERE nombre_usuario = %s", (usuario,))
-    resultado = cursor.fetchone()
-
-    # Verifica si la contraseña ingresada coincide con la almacenada (encriptada)
-    if resultado and bcrypt.checkpw(contrasena.encode('utf-8'), resultado[0].encode('utf-8')):
-        session['usuario'] = usuario  # Guarda el usuario en la sesión
-        return redirect('/posteo')  # Redirige al área de posteo
+    # Verifica si el usuario es válido
+    if verificar_usuario(usuario, clave):
+        return redirect('/bienvenido')  # Redirige a otra página si es correcto
     else:
-        return "Usuario o contraseña incorrectos", 401  # Devuelve un error si las credenciales no son válidas
+        return "❌ Usuario o contraseña incorrectos"
 
-# Ruta para el área de posteo (GET)
-@app.route('/posteo')
-def posteo():
-    """
-    Muestra el área de posteo si el usuario ha iniciado sesión.
-    - Si no hay un usuario en la sesión, redirige a la página de inicio de sesión.
-    """
-    if 'usuario' not in session:  # Verifica si el usuario está en la sesión
-        return redirect('/')  # Redirige a la página de inicio de sesión
-    return f"Bienvenido, {session['usuario']}"  # Muestra un mensaje de bienvenida
+# Página mostrada si el login es exitoso
+@app.route('/bienvenido')
+def bienvenido():
+    return "¡Inicio de sesión exitoso!"  # Puedes reemplazar esto por un render_template
 
-# Ruta para cerrar sesión (GET)
-@app.route('/logout')
-def logout():
-    """
-    Cierra la sesión del usuario.
-    - Elimina al usuario de la sesión.
-    - Redirige a la página de inicio de sesión.
-    """
-    session.pop('usuario', None)  # Elimina el usuario de la sesión
-    return redirect('/')  # Redirige a la página de inicio de sesión
+# Inicia el servidor web en modo debug
+if __name__ == '__main__':
+    app.run(debug=True)

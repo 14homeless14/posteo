@@ -47,42 +47,51 @@
 
       <label for="alarma">Alarma:</label>
       <input type="text" id="alarma" name="alarma" placeholder="opcional" />
-      <button type="submit">Enviar</button>
+      
+      <button type="button" id="abrirDialogo">Abrir Diálogo</button>
+
+      <dialog id="miDialogo" closedby="any">
+        <label for="">"RNOC:</label>
+        <p>usuario</p>
+        <button onclick="copiarTexto()">Copiar</button>
+        <button type="button" id="cerrarDialogo">Cerrar</button>
+      </dialog>
     </form>
 
     <form id="fallasForm">
       <fieldset>
         <legend>relleno automatico</legend>
         <label for="tiempoDeTT">Tiempo Trascurrio desde generacion de TT</label>
-        <input type="text" id="tiempoDeTT" name="tiempoDeTT" placeholder="se rellena solo"required/>
+        <input type="text" id="tiempoDeTT" name="tiempoDeTT" placeholder="se rellena solo" value="{{ datos.tiempoDeTT }}" readonly required/>
 
         <label for="numSucursal">Número de Sucursal:</label>
-        <input type="text" id="numSucursal" name="numSucursal" placeholder="se rellena solo" required/>
+        <input type="text" id="numSucursal" name="numSucursal" placeholder="se rellena solo" value="{{ datos.numSucursal }}" readonly />
 
         <label for="sucursal">Sucursal:</label>
-        <input type="text" id="sucursal" name="sucursal" placeholder="se rellena solo" required/>
+        <input type="text" id="sucursal" name="sucursal" placeholder="se rellena solo" value="{{ datos.sucursal }}" readonly />
 
         <label for="tituloFalla">Título de la Falla:</label>
-        <input type="text" id="tituloFalla" name="tituloFalla" placeholder="se rellena solo" required/>
+        <input type="text" id="tituloFalla" name="tituloFalla" placeholder="se rellena solo" value="{{ datos.tituloFalla }}" readonly />
 
         <!--placeholder="HH:MM:SS"-->
 
         <label for="numeroTT">#Ticket Cherwell:</label>
-        <input type="text" id="numeroTT" name="numeroTT" placeholder="se rellena solo" required/>
+        <input type="text" id="numeroTT" name="numeroTT" placeholder="se rellena solo" value="{{ datos.numeroTT }}" readonly />
 
         <label for="nodo">#Nodo o Puerto:</label>
-        <input type="text" id="nodo" name="nodo" placeholder="se rellena solo" required/>
+        <input type="text" id="nodo" name="nodo" placeholder="se rellena solo" value="{{ datos.nodo }}" readonly/>
 
         <label for="fechaDetectadaOTEnSGA">Fecha de generacion y hora de generacion de OT:</label>
-        <input type="text" id="fechaDetectadaOTEnSGA" name="fechaDetectadaOTEnSGA" placeholder="YYYY-MM-DD HH:mm:ss" required />
+        <input type="text" id="fechaDetectadaOTEnSGA" name="fechaDetectadaOTEnSGA" placeholder="YYYY-MM-DD HH:mm:ss" value="{{ datos.fechaDetectadaOTEnSGA }}" readonly  />
 
         <label for="fechaAlarm">Fecha de Creación y hora de creacion TT:</label>
-        <input type="text" id="fechaAlarm" name="fechaAlarm" placeholder="se rellena solo" required/>
+        <input type="text" id="fechaAlarm" name="fechaAlarm" placeholder="se rellena solo" value="{{ datos.fechaAlarm }}" readonly />
         
         <label for="sga">Datos SGA:</label>
-        <textarea id="sga" name="sga" rows="2"></textarea>
+        <textarea id="sga" name="sga" rows="1" readonly>{{ datos.sga }}</textarea>  
         <br />
-        <textarea id="descripcion" name="descripcion" rows="2" style="display: none;"></textarea>      </fieldset>
+        <textarea id="descripcion" name="descripcion" rows="2" style="display: none;" readonly>{{ datos.descripcion }}</textarea>      
+      </fieldset>
 
       <fieldset>
         <label for="datosAdicionales">Datos Adicionales:</label>
@@ -114,29 +123,11 @@
       </fieldset>
 
       <button type="submit">Enviar</button>
-
-      <!-- Botón para abrir el diálogo -->
-      <button type="button" id="abrirDialogo">Abrir Diálogo</button>
-
-      <!-- El diálogo que se abrirá -->
-      <dialog id="miDialogo" closedby="any">
-        <p>Este es el contenido de tu diálogo.</p>
-        <!-- Botón para cerrar el diálogo -->
-        <button type="button" id="cerrarDialogo">Cerrar</button>
-      </dialog>
     </form>
 
     <!-- Botón para cerrar sesión -->
     <button onclick="logout()">Cerrar sesión</button>
 
-    <script>
-       // Flask convierte el diccionario Python en un objeto JS
-       const rellena = { dato | tojson | safe };
-      // Rellenamos los campos con los valores del JSON
-      for (const campo in rellena) {
-      const input = document.getElementById(campo);
-       if (input) input.value = rellena[campo];
-      }
-    </script>
+
   </body>
 </html>

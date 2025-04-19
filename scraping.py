@@ -14,10 +14,10 @@ import mysql.connector
 
 app = Flask(__name__)
 
+datos = {}  # Variable global para almacenar los datos obtenidos
 @app.route("/")
 def index():
-    return render_template("consulta.html")  # Página de inicio de sesión  
-datos = {}  # Variable global para almacenar los datos obtenidos
+    return render_template("consulta.html")  # Página inicial
 
 @app.route("/scrape", methods=["POST"])
 def scrape():
@@ -133,25 +133,22 @@ def scrape():
                                    f"{minutos_diferencia2} minutos, {segundos_diferencia2} segundos")
 
     # Procesar los datos obtenidos
-    datos = {
+    informacion = {
         "numeroTT": ticketId,
         "fechaAlarm": fechaAlarm,
         "descripcion": descripcion,
         "tituloFalla": titulo,
-        "nodoPuerto": nodo,
+        "nodo": nodo,
         "sucursal": sistema,
-        "numeroSucursal": numSucursal,
-        "datosSGA": sga,
+        "numSucursal": numSucursal,
+        "sga": sga,
         "fechaDetectadaOTEnSGA": str(fecha_detectadaOT) if fecha_detectadaOT else "No se detectó una fecha",
         "tiempoDeTT": tiempoTrascurriodeTT,
         "tiempoDeTTyOT": tiempoTrascurriodeTTyOT,
     }
-    return jsonify(datos)  #render_template("posteo.html",data=data) Retornar los datos como JSON
+    return render_template("posteo.html",datos=informacion)#Retornar los datos como JSON jsonify(informacion)#
 
 
-@app.route("/posteo")
-def posteo():
-    return render_template("posteo.html",data=datos)  # Página de posteo
 
 if __name__ == "__main__":
     app.run(debug=True)
