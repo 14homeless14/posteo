@@ -53,8 +53,8 @@ def index():
 @app.route('/login', methods=['POST'])
 def login():
     # Obtener los datos del formulario HTML
-    usuario = request.form['userSGA']
-    clave = request.form['passwordSGA']
+    usuario = request.form['usuario']
+    clave = request.form['contrasena']
 
     # Validar credenciales
     if verificar_usuario(usuario, clave):

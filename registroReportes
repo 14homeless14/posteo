@@ -1,14 +1,9 @@
--- Elimina la base de datos si ya existe (opcional, solo si quieres empezar de cero)
-DROP DATABASE IF EXISTS registro;
 
 -- Crea la base de datos si no existe
 CREATE DATABASE IF NOT EXISTS registro;
 
 -- Usa esa base
 USE registro;
-
--- Elimina la tabla si ya existe (para que no dé error al volver a crearla)
-DROP TABLE IF EXISTS usuarios;
 
 -- Crear la tabla de usuarios
 CREATE TABLE usuarios (
@@ -36,6 +31,11 @@ CREATE TABLE reportes (
 INSERT INTO usuarios (numeroEmpleado, nombre, userSGA, passwordSGA) VALUES
 (228263, "emmanuel", "elorenzo", "pinolillo123");
 
+INSERT INTO reportes (numeroTT, fechaAlarm, descripcion, tituloFalla, nodo, sucursal, numSucursal, sga, fechaDetectadaOTEnSGA, tiempoDeTT, tiempoDeTTyOT) VALUES 
+("12345", NOW(), "No hay conexión en sucursal 3", "Falla de red", "Nodo1", "Sucursal 3", "003", "elorenzo", "2024-04-18 09:30:00", "2 horas", "3 horas");
+
 -- Mostrar los datos
 SELECT * FROM usuarios;
+SELECT * FROM reportes;
+
 
