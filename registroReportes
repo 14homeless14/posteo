@@ -18,6 +18,20 @@ CREATE TABLE usuarios (
     passwordSGA VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE reportes (
+    numeroTT VARCHAR(50) PRIMARY KEY,
+    fechaAlarm DATETIME,
+    descripcion TEXT,
+    tituloFalla VARCHAR(255),
+    nodo VARCHAR(100),
+    sucursal VARCHAR(100),
+    numSucursal VARCHAR(50),
+    sga VARCHAR(100),
+    fechaDetectadaOTEnSGA VARCHAR(100),  -- Puedes usar DATETIME si siempre tiene fecha válida
+    tiempoDeTT VARCHAR(100),
+    tiempoDeTTyOT VARCHAR(100)
+);
+
 -- Insertar datos de prueba
 INSERT INTO usuarios (numeroEmpleado, nombre, userSGA, passwordSGA) VALUES
 (228263, "emmanuel", "elorenzo", "pinolillo123");

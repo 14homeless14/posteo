@@ -1,7 +1,7 @@
 #pip install flask mysql-connector-python
 
 import re
-from flask import Flask, request, render_template, redirect, url_for,jsonify
+from flask import Flask, request, render_template,jsonify
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -10,15 +10,10 @@ from dateutil import parser
 import time
 from datetime import datetime
 from werkzeug.security import check_password_hash  # si usas contraseñas encriptadas
-import mysql.connector
 
 app = Flask(__name__)
 
 datos = {}  # Variable global para almacenar los datos obtenidos
-@app.route("/")
-def index():
-    return render_template("consulta.html")  # Página inicial
-
 @app.route("/scrape", methods=["POST"])
 def scrape():
     # Verifica que los datos del formulario se reciban correctamente

@@ -1,50 +1,98 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session 
 import mysql.connector
 
-# Crear la aplicación Flask
+# Crear una instancia de la aplicación Flask
 app = Flask(__name__)
 
-# Función para verificar las credenciales del usuario en la base de datos
+# Clave secreta necesaria para usar sesiones (mantener datos entre solicitudes)
+app.secret_key = 'clave-super-secreta'  # 🔒 Cámbiala por algo más seguro en producción
+
+# ----------------------------------------------
+# FUNCIÓN: verificar_usuario
+# Descripción: Verifica si las credenciales del usuario existen en la base de datos
+# Parámetros: 
+#   - usuario: nombre de usuario ingresado
+#   - clave: contraseña ingresada
+# Retorna:
+#   - True si el usuario existe y la contraseña coincide
+#   - False si no hay coincidencia
+# ----------------------------------------------
 def verificar_usuario(usuario, clave):
-    # Conexión a la base de datos MySQL
+    # Establecer conexión con la base de datos MySQL
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="123456",  # 🔒 Cambia esto por tu contraseña real
-        database="registroReportes"  # Asegúrate de que esta base de datos exista
+        password="123456",  # 🔑 Cambia por tu contraseña real
+        database="registroReportes"  # 📁 Asegúrate de que esta base de datos exista
     )
     cursor = conn.cursor()
 
-    # Consulta para verificar si el usuario existe con esa clave
+    # Ejecutar consulta para verificar credenciales
     cursor.execute("SELECT * FROM usuarios WHERE usuario = %s AND clave = %s", (usuario, clave))
+    resultado = cursor.fetchone()  # Obtiene el primer resultado (si existe)
 
-    resultado = cursor.fetchone()  # Devuelve la primera coincidencia (o None si no hay)
+    # Cerrar la conexión
     conn.close()
 
     return resultado is not None  # Devuelve True si encontró al usuario
 
-# Ruta raíz (muestra el formulario de login)
+# ----------------------------------------------
+# RUTA: /
+# Descripción: Muestra el formulario de login
+# Método: GET
+# ----------------------------------------------
 @app.route('/')
 def index():
-    return render_template('login.html')  # El archivo debe estar en /templates
+    return render_template('login.html')
 
-# Ruta que procesa los datos del formulario
+# ----------------------------------------------
+# RUTA: /login
+# Descripción: Procesa el formulario de login
+# Método: POST
+# ----------------------------------------------
 @app.route('/login', methods=['POST'])
 def login():
-    usuario = request.form['userSGA']  # Obtiene el valor del input con name="usuario"
-    clave = request.form['passwordSGA']      # Obtiene la clave
+    # Obtener los datos del formulario HTML
+    usuario = request.form['userSGA']
+    clave = request.form['passwordSGA']
 
-    # Verifica si el usuario es válido
+    # Validar credenciales
     if verificar_usuario(usuario, clave):
-        return redirect('/bienvenido')  # Redirige a otra página si es correcto
+        # Guardar el usuario en la sesión
+        session['usuario'] = usuario
+        return redirect('/consulta')  # Redirige a la página protegida
     else:
-        return "❌ Usuario o contraseña incorrectos"
+        return "❌ Usuario o contraseña incorrectos"  # Mostrar mensaje si falló
 
-# Página mostrada si el login es exitoso
-@app.route('/bienvenido')
+# ----------------------------------------------
+# RUTA: /consulta
+# Descripción: Página protegida, solo accesible si hay sesión iniciada
+# Método: GET
+# ----------------------------------------------
+@app.route('/consulta')
 def bienvenido():
-    return "¡Inicio de sesión exitoso!"  # Puedes reemplazar esto por un render_template
+    # Verificar si el usuario está en la sesión
+    if 'usuario' in session:
+        # Renderiza la página y pasa el nombre de usuario
+        return render_template("consulta.html", usuario=session['usuario'])
+    else:
+        # Si no hay sesión activa, redirige al login
+        return redirect('/')
 
-# Inicia el servidor web en modo debug
+# ----------------------------------------------
+# RUTA: /logout
+# Descripción: Cierra la sesión del usuario
+# Método: GET
+# ----------------------------------------------
+@app.route('/logout')
+def logout():
+    # Elimina al usuario de la sesión
+    session.pop('usuario', None)
+    return redirect('/')  # Redirige al login
+
+# ----------------------------------------------
+# EJECUCIÓN DEL SERVIDOR
+# Descripción: Inicia el servidor Flask en modo debug
+# ----------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True)
