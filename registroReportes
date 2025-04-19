@@ -7,13 +7,15 @@ USE registro;
 
 -- Crear la tabla de usuarios
 CREATE TABLE usuarios (
-    numeroEmpleado INT PRIMARY KEY,
+    numeroEmpleado INT ,
     nombre VARCHAR(100),
-    userSGA VARCHAR(100) NOT NULL,
+    userSGA VARCHAR(100) NOT NULL PRIMARY KEY,
     passwordSGA VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE reportes (
+    userSGA VARCHAR(100) NOT NULL REFERENCES usuarios(userSGA),
+    -- Se puede usar el mismo tipo de dato que en la tabla de usuarios
     numeroTT VARCHAR(50) PRIMARY KEY,
     fechaAlarm DATETIME,
     descripcion TEXT,
