@@ -47,18 +47,37 @@
 
       <label for="alarma">Alarma:</label>
       <input type="text" id="alarma" name="alarma" placeholder="opcional" />
+
+      <fieldset>
+        <label for="datosAdicionales">Datos Adicionales:</label>
+        <textarea id="datosAdicionales" name="datosAdicionales" rows="4"></textarea>
+      </fieldset>
       
-      <button type="button" id="abrirDialogo">Abrir Diálogo</button>
+      <fieldset>
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+          <option value="1">De su apoyo para la atención</option>
+          <option value="2">
+            Cliente confirma que cuenta con energía eléctrica
+          </option>
+          <option value="3">Se confirma ausencia de CFE</option>
+          <option value="4">
+            Cliente no contesta de su apoyo para la atención
+          </option>
+          <option value="5">
+            Zona conflictiva de su apoyo para la atención a primera hora de la
+            mañana
+          </option>
+          <option value="6">
+            Sin personal nocturno de su apoyo para la atención a primera hora de
+            la mañana
+          </option>
+          <option value="7">Mal clima en la zona</option>
+          <option value="8">Clientes no se encuentran en domicilio</option>
+        </select>
+      </fieldset>
 
-      <dialog id="miDialogo" closedby="any">
-        <label for="">"RNOC:</label>
-        <p>usuario</p>
-        <button onclick="copiarTexto()">Copiar</button>
-        <button type="button" id="cerrarDialogo">Cerrar</button>
-      </dialog>
-    </form>
 
-    <form id="fallasForm">
       <fieldset>
         <legend>relleno automatico</legend>
         <label for="tiempoDeTT">Tiempo Trascurrio desde generacion de TT</label>
@@ -93,38 +112,18 @@
         <textarea id="descripcion" name="descripcion" rows="2" style="display: none;" readonly>{{ datos.descripcion }}</textarea>      
       </fieldset>
 
-      <fieldset>
-        <label for="datosAdicionales">Datos Adicionales:</label>
-        <textarea id="datosAdicionales" name="datosAdicionales" rows="4"></textarea>
-      </fieldset>
-
-      <fieldset>
-        <label for="status">Status:</label>
-        <select id="status" name="status">
-          <option value="1">De su apoyo para la atención</option>
-          <option value="2">
-            Cliente confirma que cuenta con energía eléctrica
-          </option>
-          <option value="3">Se confirma ausencia de CFE</option>
-          <option value="4">
-            Cliente no contesta de su apoyo para la atención
-          </option>
-          <option value="5">
-            Zona conflictiva de su apoyo para la atención a primera hora de la
-            mañana
-          </option>
-          <option value="6">
-            Sin personal nocturno de su apoyo para la atención a primera hora de
-            la mañana
-          </option>
-          <option value="7">Mal clima en la zona</option>
-          <option value="8">Clientes no se encuentran en domicilio</option>
-        </select>
-      </fieldset>
-
       <button type="submit">Enviar</button>
-    </form>
 
+    <button type="button" id="copiarTexto">copiarTexto</button>
+
+    <dialog id="miDialogo" closedby="any">
+      <script>
+        function copiarTexto() {
+        }
+      <button onclick="copiarTexto()">Copiar</button>
+      <button type="button" id="cerrarDialogo">Cerrar</button>
+    </dialog>
+  
     <!-- Botón para cerrar sesión -->
     <form id="logout" action="/logout" method="POST">
       <button type="submit">Cerrar sesión</button>
