@@ -13,6 +13,7 @@ from werkzeug.security import check_password_hash  # si usas contraseñas encrip
 
 app = Flask(__name__)
 app.secret_key = 'pito'  # Necesaria para usar sesiones
+
 @app.route('/')
 def index():
     return render_template('login.html')
@@ -35,7 +36,8 @@ def login():
         session['contrasena'] = contrasena
         return render_template("consulta.html", user=session['usuario'], password=session['contrasena'])
     else:
-        return "❌ Usuario o contraseña incorrectos"
+        return render_template('login.html')
+        
 
 @app.route('/consulta')
 def bienvenido():
@@ -52,10 +54,16 @@ def logout():
 datos = {}  # Variable global para almacenar los datos obtenidos
 @app.route("/scrape", methods=["POST"])
 def scrape():
+
+    # Lee el archivo XLSX con openpyxl
+    df = pd.read_excel("base de datos.xlsx", engine="openpyxl")
+
     # Verifica que los datos del formulario se reciban correctamente
     usuario = session.get("usuario")# Obtén el usuario de la sesión #"elorenzo"
     contrasena = session.get("contrasena")#"pinolillo123"
     numeroTT = request.form.get("numeroTT")
+    fila = df[df["usuario"] == usuario]
+    nombre = fila["nombre del usuario"].iloc[0]
 
     if not usuario or not contrasena or not numeroTT:
         return jsonify({"error": "Faltan datos en el formulario"}), 400
@@ -165,6 +173,7 @@ def scrape():
 
     # Procesar los datos obtenidos
     informacion = {
+        "nombre": nombre,
         "numeroTT": ticketId,
         "fechaAlarm": fechaAlarm,
         "descripcion": descripcion,
