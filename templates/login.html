@@ -10,6 +10,11 @@
 <body>
     <div class="login-container">
         <h2>Iniciar sesión</h2>
+        
+        {% if error %}
+        <p style="color:red;">{{ error }}</p>
+        {% endif %}
+
         <form id="login" action="/login" method="POST">
             <label for="usuario">Usuario:</label>
             <input type="text" id="usuario" name="usuario" required>

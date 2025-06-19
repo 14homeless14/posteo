@@ -36,7 +36,8 @@ def login():
         session['contrasena'] = contrasena
         return render_template("consulta.html", user=session['usuario'], password=session['contrasena'])
     else:
-        return render_template('login.html')
+        return render_template('login.html', error='Usuario o contraseña incorrecta')
+
         
 
 @app.route('/consulta')
@@ -44,7 +45,8 @@ def bienvenido():
     if 'usuario' in session:
         return render_template("consulta.html", user=session['usuario'], password=session['contrasena'])
     else:
-        return render_template('login.html')
+       return render_template('login.html', error='Usuario o contraseña incorrecta')
+
 
 @app.route('/logout', methods=['POST'])
 def logout():
@@ -54,7 +56,6 @@ def logout():
 datos = {}  # Variable global para almacenar los datos obtenidos
 @app.route("/scrape", methods=["POST"])
 def scrape():
-
     # Lee el archivo XLSX con openpyxl
     df = pd.read_excel("base de datos.xlsx", engine="openpyxl")
 

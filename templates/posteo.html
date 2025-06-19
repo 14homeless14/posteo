@@ -17,10 +17,7 @@
       <legend>relleno manual</legend>
 
       <label for="tuNombre">Tu Nombre:</label>
-      <select id="tuNombre" name="tuNombre" required>
-        <option value="Emmanuel Lopez">Emmanuel Lopez</option>
-        <option value="Irving Navarro">Irving Navarro</option>
-      </select>
+      <input type="text" id="tuNombre" name="tuNombre" value="{{ datos.nombre }}"/>
 
       <label for="tipoFalla">Tipo de Falla:</label>
       <select id="tipoFalla" name="tipoFalla" required>
@@ -54,7 +51,7 @@
       </fieldset>
       
       <fieldset>
-        <label for="status">Status:</label>
+        <label for="status">validacion:</label>
         <select id="status" name="status">
           <option value="1">De su apoyo para la atención</option>
           <option value="2">
@@ -113,22 +110,21 @@
       </fieldset>
 
       <button type="submit">Enviar</button>
+    </form>
 
-    <button type="button" id="copiarTexto">copiarTexto</button>
+      <!-- Botón para abrir el diálogo -->
+      <button type="button" id="abrirDialogo" onclick="copiarTexto()">Copiar</button>
+      <!-- El cuadro de diálogo -->
+      <dialog id="miDialogo">
+      <pre id="contenidoDialogo" style="white-space: pre-wrap;"></pre>
+      <button onclick="document.getElementById('miDialogo').close()">Cerrar</button>
+      </dialog>
 
-    <dialog id="miDialogo" closedby="any">
-      <script>
-        function copiarTexto() {
-        }
-      <button onclick="copiarTexto()">Copiar</button>
-      <button type="button" id="cerrarDialogo">Cerrar</button>
-    </dialog>
-  
+
     <!-- Botón para cerrar sesión -->
     <form id="logout" action="/logout" method="POST">
       <button type="submit">Cerrar sesión</button>
     </form>
-
 
   </body>
 </html>

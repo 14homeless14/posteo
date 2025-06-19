@@ -1,25 +1,61 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Referencias a los elementos del DOM
-  const dialogo = document.getElementById("miDialogo");
-  const abrirBtn = document.getElementById("abrirDialogo");
-  const cerrarBtn = document.getElementById("cerrarDialogo");
-  const cargar = document.getElementById("cargar");
+function copiarTexto() {
+  const tuNombreNombre = document.getElementById("tuNombre").value;
+  const tipoFalla = document.getElementById("tipoFalla");
+  const textoSeleccionado = tipoFalla.options[tipoFalla.selectedIndex].text;
 
-  // Verificar que los elementos se han cargado correctamente
-  console.log(dialogo, abrirBtn, cerrarBtn, cargar);
+  const selecionvalidacion = document.getElementById("status");
+  const validacionseleccionado = selecionvalidacion.options[selecionvalidacion.selectedIndex].text;
 
-  // Evento para abrir el diálogo
-  abrirBtn.addEventListener("click", () => {
-    console.log("Abriendo el diálogo");
-    dialogo.showModal(); // Muestra el diálogo
+  const Titulo = document.getElementById("tituloFalla").value;
+  const sucursal = document.getElementById("sucursal").value;
+  const TT = document.getElementById("numeroTT").value;
+  const OT = document.getElementById("folioOT").value;
+  const ctcHub = document.getElementById("ctcHub").value;
+  const alarma = document.getElementById("alarma").value;
+  const coordenadas = document.getElementById("coordenadas").value;
+  const afectacion = document.getElementById("clientesAfectados").value;
+  const datosAdicionales = document.getElementById("datosAdicionales").value;
+  const fechaCreacion = document.getElementById("fechaAlarm").value;
+
+  // Construir el texto a copiar
+  let texto = `*RNOC:* ${tuNombreNombre} *INICIO*\n`;
+  texto += `*Titulo de la falla:* ${Titulo}\n`;
+  texto += `*TIPO FALLA:* ${textoSeleccionado}\n`;
+  texto += `*SUCURSAL:* ${sucursal}\n`;
+  texto += `*TT: ${TT} OT: ${OT}*\n`;
+  if (ctcHub.trim() !== "") {
+    texto += `CTC o HUB: *${ctcHub}*\n`;
+  }
+  if (alarma.trim() !== "") {
+    texto += `Alarma: *${alarma}*\n`;
+  }
+  texto += `COORDENADAS: *${coordenadas}*\n`;
+  texto += `AFECTACIÓN: *${afectacion}*\n`;
+  texto += `Validación: *${validacionseleccionado}*\n`;
+  if (datosAdicionales.trim() !== "") {
+    texto += `Datos adicionales: *${datosAdicionales}*\n`;
+  }
+  texto += `Fecha de Creación: *${fechaCreacion}*\n`;
+  
+  // Mostrar en el <dialog>
+  document.getElementById("contenidoDialogo").textContent = texto;
+
+
+  // Copiar al portapapeles
+  navigator.clipboard.writeText(texto).then(() => {
+    document.getElementById("miDialogo").showModal();
+  }).catch(err => {
+    console.error("Error al copiar al portapapeles:", err);
   });
+}
 
-  // Evento para cerrar el diálogo
-  cerrarBtn.addEventListener("click", () => {
-    console.log("Cerrando el diálogo");
-    dialogo.close(); // Cierra el diálogo
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('scraping-form');
+    const btn = document.getElementById('btnConsultar');
+
+    form.addEventListener('submit', function () {
+      btn.disabled = true;
+      btn.value = 'Consultando...'; // opcional: cambia el texto
+    });
   });
-
-});
-
-
