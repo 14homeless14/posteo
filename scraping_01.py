@@ -1,6 +1,7 @@
 #pip install flask mysql-connector-python
 import re
-from flask import Flask, request, render_template, jsonify, session, redirect
+from flask import Flask, request, render_template, jsonify, session, redirect, url_for, flash
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -25,8 +26,9 @@ def login():
     contrasena = request.form['contrasena']
     
     # Lee el archivo XLSX con openpyxl
-    df = pd.read_excel("base de datos.xlsx", engine="openpyxl")
-    
+    df = pd.read_excel("base de datos.xlsx", sheet_name="usuarios", engine="openpyxl")
+    # Verifica que los datos del formulario se reciban correctamente
+
     # Revisa si hay alguna fila que coincida con usuario y contraseña
     usuario_valido = df[(df['usuario'] == usuario) & (df['contrasena'] == contrasena)]
 
@@ -57,7 +59,8 @@ datos = {}  # Variable global para almacenar los datos obtenidos
 @app.route("/scrape", methods=["POST"])
 def scrape():
     # Lee el archivo XLSX con openpyxl
-    df = pd.read_excel("base de datos.xlsx", engine="openpyxl")
+    df = pd.read_excel("base de datos.xlsx", sheet_name="usuarios", engine="openpyxl")
+    # Verifica que el usuario esté en sesión
 
     # Verifica que los datos del formulario se reciban correctamente
     usuario = session.get("usuario")# Obtén el usuario de la sesión #"elorenzo"
@@ -188,6 +191,62 @@ def scrape():
         "tiempoDeTTyOT": tiempoTrascurriodeTTyOT,
     }
     return render_template("posteo.html",datos=informacion)#Retornar los datos como JSON jsonify(informacion)#
+
+
+@app.route('/posteo', methods=['POST'])
+@app.route('/posteo', methods=['GET', 'POST'])
+def guardar_posteo():
+    if request.method == 'POST':
+        datos_formulario = {
+            'Nombre': request.form.get('tuNombre'),
+            'Tipo de Falla': request.form.get('tipoFalla'),
+            'Folio OT': request.form.get('folioOT'),
+            'Clientes Afectados': request.form.get('clientesAfectados'),
+            'Coordenadas': request.form.get('coordenadas'),
+            'CTC o Hub': request.form.get('ctcHub'),
+            'Alarma': request.form.get('alarma'),
+            'Datos Adicionales': request.form.get('datosAdicionales'),
+            'Validación': request.form.get('status'),
+            'Tiempo TT': request.form.get('tiempoDeTT'),
+            'Número Sucursal': request.form.get('numSucursal'),
+            'Sucursal': request.form.get('sucursal'),
+            'Título Falla': request.form.get('tituloFalla'),
+            'Ticket TT': request.form.get('numeroTT'),
+            'Nodo o Puerto': request.form.get('nodo'),
+            'Fecha OT': request.form.get('fechaDetectadaOTEnSGA'),
+            'Fecha Alarm': request.form.get('fechaAlarm'),
+            'Datos SGA': request.form.get('sga'),
+            'Descripción': request.form.get('descripcion'),
+        }
+
+        try:
+            # Leer ambas hojas
+            xls = pd.read_excel('base de datos.xlsx', sheet_name=None, engine='openpyxl')
+
+            # Obtener el orden correcto desde la hoja "registros"
+            registros_existentes = xls.get("registros", pd.DataFrame())
+            columnas = registros_existentes.columns.tolist() if not registros_existentes.empty else list(datos_formulario.keys())
+
+            nuevo_registro = pd.DataFrame([datos_formulario])[columnas]
+
+            # Concatenar el nuevo registro
+            df_actualizado = pd.concat([registros_existentes, nuevo_registro], ignore_index=True)
+
+            # Escribir de nuevo las dos hojas
+            with pd.ExcelWriter('base de datos.xlsx', engine='openpyxl', mode='w') as writer:
+                xls['usuarios'].to_excel(writer, sheet_name='usuarios', index=False)
+                df_actualizado.to_excel(writer, sheet_name='registros', index=False)
+
+        except FileNotFoundError:
+            # Si no existe, crea ambas hojas desde cero
+            with pd.ExcelWriter('base de datos.xlsx', engine='openpyxl') as writer:
+                pd.DataFrame(columns=['usuario', 'contrasena', 'nombre del usuario']).to_excel(writer, sheet_name='usuarios', index=False)
+                pd.DataFrame([datos_formulario]).to_excel(writer, sheet_name='registros', index=False)
+
+        flash("✅ Registro guardado exitosamente")
+        return redirect(url_for('bienvenido'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

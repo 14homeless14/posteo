@@ -10,7 +10,10 @@
   </head>
 
   <body>
-    <h1>Bienvenido a la página de posteo</h1>
+    <header>
+      <h1>Bienvenido a la página de posteo</h1>
+       <a href="/consulta">volver</a>
+    </header>
     
     <!-- Formulario de relleno manual -->
     <form id="datosDePosteo" action="/posteo" method="POST">
@@ -112,19 +115,17 @@
       <button type="submit">Enviar</button>
     </form>
 
-      <!-- Botón para abrir el diálogo -->
-      <button type="button" id="abrirDialogo" onclick="copiarTexto()">Copiar</button>
-      <!-- El cuadro de diálogo -->
-      <dialog id="miDialogo">
-      <pre id="contenidoDialogo" style="white-space: pre-wrap;"></pre>
-      <button onclick="document.getElementById('miDialogo').close()">Cerrar</button>
-      </dialog>
-
+    <!-- Botón para abrir el diálogo -->
+    <button type="button" id="abrirDialogo" onclick="copiarTexto()">Copiar</button>
+    <!-- El cuadro de diálogo -->
+    <dialog id="miDialogo">
+    <pre id="contenidoDialogo" style="white-space: pre-wrap;"></pre>
+    <button onclick="document.getElementById('miDialogo').close()">Cerrar</button>
+    </dialog>
 
     <!-- Botón para cerrar sesión -->
     <form id="logout" action="/logout" method="POST">
       <button type="submit">Cerrar sesión</button>
     </form>
-
   </body>
 </html>

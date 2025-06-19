@@ -25,5 +25,17 @@
     <form id="logout" action="/logout" method="POST">
       <button type="submit">Cerrar sesión</button>
     </form>
+
+     {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul id="mensajesFlash">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  
+  
   </body>
 </html>

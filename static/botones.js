@@ -24,19 +24,19 @@ function copiarTexto() {
   texto += `*SUCURSAL:* ${sucursal}\n`;
   texto += `*TT: ${TT} OT: ${OT}*\n`;
   if (ctcHub.trim() !== "") {
-    texto += `CTC o HUB: *${ctcHub}*\n`;
+    texto += `*CTC o HUB:* ${ctcHub}\n`;
   }
   if (alarma.trim() !== "") {
     texto += `Alarma: *${alarma}*\n`;
   }
-  texto += `COORDENADAS: *${coordenadas}*\n`;
-  texto += `AFECTACIÓN: *${afectacion}*\n`;
-  texto += `Validación: *${validacionseleccionado}*\n`;
+  texto += `*COORDENADAS:* ${coordenadas}\n`;
+  texto += `*AFECTACIÓN:* ${afectacion}\n`;
+  texto += `*Validación:* ${validacionseleccionado}\n`;
   if (datosAdicionales.trim() !== "") {
-    texto += `Datos adicionales: *${datosAdicionales}*\n`;
+    texto += `*Datos adicionales:* ${datosAdicionales}\n`;
   }
-  texto += `Fecha de Creación: *${fechaCreacion}*\n`;
-  
+  texto += `*Fecha de Creación:* ${fechaCreacion}\n`;
+
   // Mostrar en el <dialog>
   document.getElementById("contenidoDialogo").textContent = texto;
 
@@ -59,3 +59,12 @@ function copiarTexto() {
       btn.value = 'Consultando...'; // opcional: cambia el texto
     });
   });
+
+  // Mostrar el diálogo
+  document.getElementById("miDialogo").addEventListener("close", function () {
+    const btn = document.getElementById('btnConsultar');
+    btn.disabled = false;
+    btn.value = 'Consultar';
+  });
+  
+  
