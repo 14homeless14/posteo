@@ -67,4 +67,31 @@ function copiarTexto() {
     btn.value = 'Consultar';
   });
   
-  
+/*
+const DMScoordenadas = document.getElementById("dms").value.trim();
+
+function dmsADecimal(dms) {
+  if(dms==){const regex = /(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([NS])?\s+(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([EW])/i;
+    const match = dms.match(regex);
+
+
+    let lat = parseInt(match[1]) + parseInt(match[2]) / 60 + parseFloat(match[3]) / 3600;
+    let lon = parseInt(match[5]) + parseInt(match[6]) / 60 + parseFloat(match[7]) / 3600;
+
+    if (match[4].toUpperCase() === "S") lat *= -1;
+    if (match[8].toUpperCase() === "W") lon *= -1;
+
+    return { lat, lon };
+  }
+}
+
+function convertirYBuscar() {
+  const input = document.getElementById("dms").value.trim();
+  const coordenadas = dmsADecimal(input);
+
+  if (coordenadas) {
+    const url = `https://www.google.com/maps?q=${coordenadas.lat},${coordenadas.lon}`;
+    window.open(url, "_blank");
+  }
+}
+*/

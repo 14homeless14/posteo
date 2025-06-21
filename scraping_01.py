@@ -78,7 +78,7 @@ def scrape():
     
     # Navegar a la página de login
     driver.get("http://sgn.iyarnoc/login")
-    time.sleep(2)
+    time.sleep(1)
     
     # Iniciar sesión
     campo_usuario = driver.find_element(By.NAME, "usuario")
@@ -87,7 +87,7 @@ def scrape():
     campo_contrasena = driver.find_element(By.NAME, "password")
     campo_contrasena.send_keys(contrasena)
     campo_contrasena.send_keys(Keys.RETURN)
-    time.sleep(2)
+    time.sleep(1)
     
     # Navegar a la página siguiente
     driver.get("http://sgn.iyarnoc/ordenesOTConEquipo2")
@@ -196,27 +196,30 @@ def scrape():
 @app.route('/posteo', methods=['POST'])
 @app.route('/posteo', methods=['GET', 'POST'])
 def guardar_posteo():
+
+
     if request.method == 'POST':
         datos_formulario = {
-            'Nombre': request.form.get('tuNombre'),
-            'Tipo de Falla': request.form.get('tipoFalla'),
-            'Folio OT': request.form.get('folioOT'),
-            'Clientes Afectados': request.form.get('clientesAfectados'),
-            'Coordenadas': request.form.get('coordenadas'),
-            'CTC o Hub': request.form.get('ctcHub'),
-            'Alarma': request.form.get('alarma'),
-            'Datos Adicionales': request.form.get('datosAdicionales'),
-            'Validación': request.form.get('status'),
-            'Tiempo TT': request.form.get('tiempoDeTT'),
-            'Número Sucursal': request.form.get('numSucursal'),
-            'Sucursal': request.form.get('sucursal'),
-            'Título Falla': request.form.get('tituloFalla'),
-            'Ticket TT': request.form.get('numeroTT'),
-            'Nodo o Puerto': request.form.get('nodo'),
-            'Fecha OT': request.form.get('fechaDetectadaOTEnSGA'),
-            'Fecha Alarm': request.form.get('fechaAlarm'),
-            'Datos SGA': request.form.get('sga'),
-            'Descripción': request.form.get('descripcion'),
+    'Nombre': request.form.get('tuNombre'),
+    'Tipo de Falla': request.form.get('tipoFalla'),
+    'Folio OT': request.form.get('folioOT'),
+    'Clientes Afectados': request.form.get('clientesAfectados'),
+    'Coordenadas': request.form.get('coordenadas'),
+    'CTC o Hub': request.form.get('ctcHub'),
+    'Alarma': request.form.get('alarma'),
+    'Datos Adicionales': request.form.get('datosAdicionales'),
+    'Validación': request.form.get('status'),
+    'Fecha TT': request.form.get('fechaAlarm'),
+    'Tiempo TT': request.form.get('tiempoDeTT'),
+    'Fecha OT': request.form.get('fechaDetectadaOTEnSGA'),
+    'Tiempo OT': request.form.get('tiempoDeOT'),
+    'Número Sucursal': request.form.get('numSucursal'),
+    'Sucursal': request.form.get('sucursal'),
+    'Título Falla': request.form.get('tituloFalla'),
+    '#Ticket': request.form.get('numeroTT'),
+    'Nodo o Puerto': request.form.get('nodo'),
+    'Datos SGA': request.form.get('sga'),
+    'Descripción': request.form.get('descripcion'),
         }
 
         try:
@@ -236,14 +239,35 @@ def guardar_posteo():
             with pd.ExcelWriter('base de datos.xlsx', engine='openpyxl', mode='w') as writer:
                 xls['usuarios'].to_excel(writer, sheet_name='usuarios', index=False)
                 df_actualizado.to_excel(writer, sheet_name='registros', index=False)
-
         except FileNotFoundError:
             # Si no existe, crea ambas hojas desde cero
             with pd.ExcelWriter('base de datos.xlsx', engine='openpyxl') as writer:
                 pd.DataFrame(columns=['usuario', 'contrasena', 'nombre del usuario']).to_excel(writer, sheet_name='usuarios', index=False)
                 pd.DataFrame([datos_formulario]).to_excel(writer, sheet_name='registros', index=False)
+        
+        mensaje_formateado = f"""*RNOC:* {request.form.get('tuNombre')} *INICIO*
+        *Titulo de la falla:* {request.form.get('tituloFalla')}
+        *TIPO FALLA:* {request.form.get('tipoFalla')}
+        *SUCURSAL:* {request.form.get('sucursal')}
+        *TT: {request.form.get('numeroTT')} OT: {request.form.get('folioOT')}*
+        """
+    
+        if request.form.get('ctcHub').strip():
+            mensaje_formateado += f"CTC o HUB: *{request.form.get('ctcHub')}*\n"
+        if request.form.get('alarma').strip():
+            mensaje_formateado += f"Alarma: *{request.form.get('alarma')}*\n"
+    
+        mensaje_formateado += f"""COORDENADAS: *{request.form.get('coordenadas')}*
+        AFECTACIÓN: *{request.form.get('clientesAfectados')}*
+        Validación: *{request.form.get('status')}*
+        """
+        
+        if request.form.get('datosAdicionales').strip():
+            mensaje_formateado += f"Datos adicionales: *{request.form.get('datosAdicionales')}*\n"
+        
+        mensaje_formateado += f"Fecha de Creación: *{request.form.get('fechaAlarm')}*"
 
-        flash("✅ Registro guardado exitosamente")
+        flash("✅ Registro guardado exitosamente\n\n" + mensaje_formateado)
         return redirect(url_for('bienvenido'))
 
 

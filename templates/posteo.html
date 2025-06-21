@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formulario de Atención de Falla</title>
-    <link rel="stylesheet" href="/static/estilos.css" />
-    <script src="/static/login.js"></script>
-    <script src="/static/botones.js"></script>
-  </head>
 
-  <body>
-    <header>
-      <h1>Bienvenido a la página de posteo</h1>
-       <a href="/consulta">volver</a>
-    </header>
-    
-    <!-- Formulario de relleno manual -->
-    <form id="datosDePosteo" action="/posteo" method="POST">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulario de Atención de Falla</title>
+  <link rel="stylesheet" href="/static/estilos.css" />
+  <script src="/static/login.js"></script>
+  <script src="/static/botones.js"></script>
+</head>
+
+<body>
+  <heade class="encabezado-posteo">
+  <a href="/consulta" class="volver">← Volver</a>
+  <h1>Bienvenido a la página de posteo</h1>
+  </header>
+
+  <!-- Formulario de relleno manual -->
+  <form id="datosDePosteo" action="/posteo" method="POST">
+    <!-- Botón para abrir el diálogo -->
+    <button type="button" id="abrirDialogo" onclick="copiarTexto()" class="full-width">Copiar</button>
+    <!-- El cuadro de diálogo -->
+    <dialog id="miDialogo">
+      <pre id="contenidoDialogo" style="white-space: pre-wrap;"></pre>
+      <button onclick="document.getElementById('miDialogo').close()">Cerrar</button>
+    </dialog>
+
+    <fieldset>
       <legend>relleno manual</legend>
 
       <label for="tuNombre">Tu Nombre:</label>
-      <input type="text" id="tuNombre" name="tuNombre" value="{{ datos.nombre }}"/>
+      <input type="text" id="tuNombre" name="tuNombre" value="{{ datos.nombre }}" />
 
       <label for="tipoFalla">Tipo de Falla:</label>
       <select id="tipoFalla" name="tipoFalla" required>
@@ -34,98 +44,92 @@
       </select>
       <br />
       <label for="folioOT">#Folio OT:</label>
-      <input type="text" id="folioOT" name="folioOT"  />
+      <input type="text" id="folioOT" name="folioOT" required />
 
       <label for="clientesAfectados">Clientes Afectados:</label>
-      <input type="text" id="clientesAfectados" name="clientesAfectados"  />
+      <input type="text" id="clientesAfectados" name="clientesAfectados" />
 
       <label for="coordenadas">Coordenadas:</label>
-      <input type="text" id="coordenadas" name="coordenadas"  />
+      <input type="text" id="coordenadas" name="coordenadas" required />
 
       <label for="ctcHub">CTC o Hub:</label>
-      <input type="text" id="ctcHub" name="ctcHub" placeholder="opcional" />
+      <input type="text" id="ctcHub" name="ctcHub" placeholder="CTC o Hub:" />
 
       <label for="alarma">Alarma:</label>
-      <input type="text" id="alarma" name="alarma" placeholder="opcional" />
+      <input type="text" id="alarma" name="alarma" placeholder="Alarma" />
 
-      <fieldset>
-        <label for="datosAdicionales">Datos Adicionales:</label>
-        <textarea id="datosAdicionales" name="datosAdicionales" rows="4"></textarea>
-      </fieldset>
-      
-      <fieldset>
-        <label for="status">validacion:</label>
-        <select id="status" name="status">
-          <option value="1">De su apoyo para la atención</option>
-          <option value="2">
-            Cliente confirma que cuenta con energía eléctrica
-          </option>
-          <option value="3">Se confirma ausencia de CFE</option>
-          <option value="4">
-            Cliente no contesta de su apoyo para la atención
-          </option>
-          <option value="5">
-            Zona conflictiva de su apoyo para la atención a primera hora de la
-            mañana
-          </option>
-          <option value="6">
-            Sin personal nocturno de su apoyo para la atención a primera hora de
-            la mañana
-          </option>
-          <option value="7">Mal clima en la zona</option>
-          <option value="8">Clientes no se encuentran en domicilio</option>
-        </select>
-      </fieldset>
+      <label for="datosAdicionales">Datos Adicionales:</label>
+      <textarea id="datosAdicionales" name="datosAdicionales" rows="4"></textarea>
 
+      <label for="status">validacion:</label>
+      <select id="status" name="status">
+        <option value="1">De su apoyo para la atención</option>
+        <option value="2">
+          Cliente confirma que cuenta con energía eléctrica
+        </option>
+        <option value="3">Se confirma ausencia de CFE</option>
+        <option value="4">
+          Cliente no contesta de su apoyo para la atención
+        </option>
+        <option value="5">
+          Zona conflictiva de su apoyo para la atención a primera hora de la
+          mañana
+        </option>
+        <option value="6">
+          Sin personal nocturno de su apoyo para la atención a primera hora de
+          la mañana
+        </option>
+        <option value="7">Mal clima en la zona</option>
+        <option value="8">Clientes no se encuentran en domicilio</option>
+      </select>
+    </fieldset>
 
-      <fieldset>
-        <legend>relleno automatico</legend>
-        <label for="tiempoDeTT">Tiempo Trascurrio desde generacion de TT</label>
-        <input type="text" id="tiempoDeTT" name="tiempoDeTT" placeholder="se rellena solo" value="{{ datos.tiempoDeTT }}" readonly required/>
+    <fieldset>
+      <legend>relleno automatico</legend>
+      <label for="fechaDetectadaOTEnSGA">Fecha de generacion y hora de generacion de OT:</label>
+      <input type="text" id="fechaDetectadaOTEnSGA" name="fechaDetectadaOTEnSGA" placeholder="YYYY-MM-DD HH:mm:ss"
+        value="{{ datos.fechaDetectadaOTEnSGA }}" readonly />
 
-        <label for="numSucursal">Número de Sucursal:</label>
-        <input type="text" id="numSucursal" name="numSucursal" placeholder="se rellena solo" value="{{ datos.numSucursal }}" readonly />
+      <label for="tiempoDeOT">difenrencia entre OT y TT </label>
+      <input type="text" id="tiempoDeOT" name="tiempoDeOT" placeholder="se rellena solo" value="{{ datos.tiempoDeTTyOT }}"
+        readonly required />    
 
-        <label for="sucursal">Sucursal:</label>
-        <input type="text" id="sucursal" name="sucursal" placeholder="se rellena solo" value="{{ datos.sucursal }}" readonly />
+      <label for="numSucursal">Número de Sucursal:</label>
+      <input type="text" id="numSucursal" name="numSucursal" placeholder="se rellena solo"
+        value="{{ datos.numSucursal }}" readonly />
 
-        <label for="tituloFalla">Título de la Falla:</label>
-        <input type="text" id="tituloFalla" name="tituloFalla" placeholder="se rellena solo" value="{{ datos.tituloFalla }}" readonly />
+      <label for="sucursal">Sucursal:</label>
+      <input type="text" id="sucursal" name="sucursal" placeholder="se rellena solo" value="{{ datos.sucursal }}"
+        readonly />
 
-        <!--placeholder="HH:MM:SS"-->
+      <label for="tituloFalla">Título de la Falla:</label>
+      <input type="text" id="tituloFalla" name="tituloFalla" placeholder="se rellena solo"
+        value="{{ datos.tituloFalla }}" readonly />
 
-        <label for="numeroTT">#Ticket Cherwell:</label>
-        <input type="text" id="numeroTT" name="numeroTT" placeholder="se rellena solo" value="{{ datos.numeroTT }}" readonly />
+      <!--placeholder="HH:MM:SS"-->
 
-        <label for="nodo">#Nodo o Puerto:</label>
-        <input type="text" id="nodo" name="nodo" placeholder="se rellena solo" value="{{ datos.nodo }}" readonly/>
+      <label for="numeroTT">#Ticket Cherwell:</label>
+      <input type="text" id="numeroTT" name="numeroTT" placeholder="se rellena solo" value="{{ datos.numeroTT }}"
+        readonly />
 
-        <label for="fechaDetectadaOTEnSGA">Fecha de generacion y hora de generacion de OT:</label>
-        <input type="text" id="fechaDetectadaOTEnSGA" name="fechaDetectadaOTEnSGA" placeholder="YYYY-MM-DD HH:mm:ss" value="{{ datos.fechaDetectadaOTEnSGA }}" readonly  />
+      <label for="nodo">#Nodo o Puerto:</label>
+      <input type="text" id="nodo" name="nodo" placeholder="se rellena solo" value="{{ datos.nodo }}" readonly />
 
-        <label for="fechaAlarm">Fecha de Creación y hora de creacion TT:</label>
-        <input type="text" id="fechaAlarm" name="fechaAlarm" placeholder="se rellena solo" value="{{ datos.fechaAlarm }}" readonly />
-        
-        <label for="sga">Datos SGA:</label>
-        <textarea id="sga" name="sga" rows="1" readonly>{{ datos.sga }}</textarea>  
-        <br />
-        <textarea id="descripcion" name="descripcion" rows="2" style="display: none;" readonly>{{ datos.descripcion }}</textarea>      
-      </fieldset>
+      <label for="fechaAlarm">Fecha de Creación y hora de creacion TT:</label>
+      <input type="text" id="fechaAlarm" name="fechaAlarm" placeholder="se rellena solo" value="{{ datos.fechaAlarm }}"
+        readonly />
 
-      <button type="submit">Enviar</button>
-    </form>
+      <label for="tiempoDeTT">Tiempo Trascurrio desde generacion de TT</label>
+      <input type="text" id="tiempoDeTT" name="tiempoDeTT" placeholder="se rellena solo" value="{{ datos.tiempoDeTT }}"
+        readonly required />  
 
-    <!-- Botón para abrir el diálogo -->
-    <button type="button" id="abrirDialogo" onclick="copiarTexto()">Copiar</button>
-    <!-- El cuadro de diálogo -->
-    <dialog id="miDialogo">
-    <pre id="contenidoDialogo" style="white-space: pre-wrap;"></pre>
-    <button onclick="document.getElementById('miDialogo').close()">Cerrar</button>
-    </dialog>
+      <label for="sga">Datos SGA:</label>
+      <textarea id="sga" name="sga" rows="1" readonly>{{ datos.sga }}</textarea>
+      <br />
+      <textarea id="descripcion" name="descripcion" rows="2" style="display: none;"
+        readonly>{{ datos.descripcion }}</textarea>
+    </fieldset>
+  </form>
+</body>
 
-    <!-- Botón para cerrar sesión -->
-    <form id="logout" action="/logout" method="POST">
-      <button type="submit">Cerrar sesión</button>
-    </form>
-  </body>
 </html>
