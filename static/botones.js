@@ -66,32 +66,60 @@ function copiarTexto() {
     btn.disabled = false;
     btn.value = 'Consultar';
   });
+
   
-/*
-const DMScoordenadas = document.getElementById("dms").value.trim();
 
-function dmsADecimal(dms) {
-  if(dms==){const regex = /(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([NS])?\s+(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([EW])/i;
-    const match = dms.match(regex);
+// Conversión de DMS a Decimal
+const DMScoordenadas = document.getElementById("coordenadas").value.trim();
 
+// 🔁 Función que detecta el formato de coordenadas y las convierte a decimales
+function convertirCoordenadas(DMScoordenadas) {
+  // 🧪 Expresión regular para formato DMS: grados, minutos, segundos (ej. 20°39'34.9"N 103°20'58.6"W)
+  const dmsRegex = /(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([NSns])[\s,]+(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([EWew])/;
 
-    let lat = parseInt(match[1]) + parseInt(match[2]) / 60 + parseFloat(match[3]) / 3600;
-    let lon = parseInt(match[5]) + parseInt(match[6]) / 60 + parseFloat(match[7]) / 3600;
+  // 🧪 Expresión regular para formato DM: grados y minutos (ej. 20°39.582'N 103°20.976'W)
+  const dmRegex = /(\d+)[°º]\s*([\d.]+)[']\s*([NSns])[\s,]+(\d+)[°º]\s*([\d.]+)[']\s*([EWew])/;
 
+  // 🧪 Expresión regular para formato decimal (ej. 20.659694 -103.349611)
+  const decRegex = /^([-+]?\d+(\.\d+)?)[\s,]+([-+]?\d+(\.\d+)?)/;
+
+  // 🧭 Validación y conversión para formato DMS
+  if (dmsRegex.test(DMScoordenadas)) {
+    const match = DMScoordenadas.match(dmsRegex);
+
+    // 🎯 Convertimos latitud y longitud con fórmula: grados + minutos/60 + segundos/3600
+    let lat = parseFloat(match[1]) + parseFloat(match[2]) / 60 + parseFloat(match[3]) / 3600;
+    let lon = parseFloat(match[5]) + parseFloat(match[6]) / 60 + parseFloat(match[7]) / 3600;
+
+    // 👇 Si es hemisferio sur o oeste, se vuelve negativo
     if (match[4].toUpperCase() === "S") lat *= -1;
     if (match[8].toUpperCase() === "W") lon *= -1;
 
     return { lat, lon };
   }
-}
 
-function convertirYBuscar() {
-  const input = document.getElementById("dms").value.trim();
-  const coordenadas = dmsADecimal(input);
+  // 🧭 Validación y conversión para formato DM
+  if (dmRegex.test(DMScoordenadas)) {
+    const match = DMScoordenadas.match(dmRegex);
 
-  if (coordenadas) {
-    const url = `https://www.google.com/maps?q=${coordenadas.lat},${coordenadas.lon}`;
-    window.open(url, "_blank");
+    let lat = parseFloat(match[1]) + parseFloat(match[2]) / 60;
+    let lon = parseFloat(match[4]) + parseFloat(match[5]) / 60;
+
+    if (match[3].toUpperCase() === "S") lat *= -1;
+    if (match[6].toUpperCase() === "W") lon *= -1;
+
+    return { lat, lon };
   }
+
+  // 🧭 Validación para coordenadas decimales directas
+  if (decRegex.test(DMScoordenadas)) {
+    const match = DMScoordenadas.match(decRegex);
+    const lat = parseFloat(match[1]);
+    const lon = parseFloat(match[3]);
+    return { lat, lon };
+  }
+
+  // ⚠️ Si no coincide ningún formato, se muestra un mensaje de error
+  alert("Formato no reconocido. Ejemplos válidos:\n• DMS: 20°39'34.9\"N 103°20'58.6\"W\n• DM: 20°39.582'N 103°20.976'W\n• Decimal: 20.659694 -103.349611");
+  return null;
 }
-*/
