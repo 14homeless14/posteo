@@ -119,3 +119,11 @@ grid-template-rows: 1fr;
 grid-column-gap: 700px;
 grid-row-gap: 0px;
 }
+
+#imagePreview {
+    display: none;
+    max-width: 1000px;
+    max-height: 1000px;
+    display: block;
+    margin: auto;
+  }

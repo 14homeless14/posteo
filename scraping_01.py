@@ -90,8 +90,8 @@ def scrape():
     time.sleep(1)
     
     # Navegar a la página siguiente
-    driver.get("http://sgn.iyarnoc/ordenesOTConEquipo2")
-    time.sleep(2)
+    driver.get("http://sgn.iyarnoc/ordenesOTConEquipo2DEV")
+    time.sleep(1)
     
     # Buscar el campo de número de ticket
     campo_texto = driver.find_element(By.ID, 'ticketId')

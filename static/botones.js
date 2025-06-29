@@ -4,7 +4,8 @@ function copiarTexto() {
   const textoSeleccionado = tipoFalla.options[tipoFalla.selectedIndex].text;
 
   const selecionvalidacion = document.getElementById("status");
-  const validacionseleccionado = selecionvalidacion.options[selecionvalidacion.selectedIndex].text;
+  const validacionseleccionado =
+    selecionvalidacion.options[selecionvalidacion.selectedIndex].text;
 
   const Titulo = document.getElementById("tituloFalla").value;
   const sucursal = document.getElementById("sucursal").value;
@@ -40,34 +41,33 @@ function copiarTexto() {
   // Mostrar en el <dialog>
   document.getElementById("contenidoDialogo").textContent = texto;
 
-
   // Copiar al portapapeles
-  navigator.clipboard.writeText(texto).then(() => {
-    document.getElementById("miDialogo").showModal();
-  }).catch(err => {
-    console.error("Error al copiar al portapapeles:", err);
-  });
+  navigator.clipboard
+    .writeText(texto)
+    .then(() => {
+      document.getElementById("miDialogo").showModal();
+    })
+    .catch((err) => {
+      console.error("Error al copiar al portapapeles:", err);
+    });
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("scraping-form");
+  const btn = document.getElementById("btnConsultar");
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('scraping-form');
-    const btn = document.getElementById('btnConsultar');
-
-    form.addEventListener('submit', function () {
-      btn.disabled = true;
-      btn.value = 'Consultando...'; // opcional: cambia el texto
-    });
+  form.addEventListener("submit", function () {
+    btn.disabled = true;
+    btn.value = "Consultando..."; // opcional: cambia el texto
   });
+});
 
-  // Mostrar el diálogo
-  document.getElementById("miDialogo").addEventListener("close", function () {
-    const btn = document.getElementById('btnConsultar');
-    btn.disabled = false;
-    btn.value = 'Consultar';
-  });
-
-  
+// Mostrar el diálogo
+document.getElementById("miDialogo").addEventListener("close", function () {
+  const btn = document.getElementById("btnConsultar");
+  btn.disabled = false;
+  btn.value = "Consultar";
+});
 
 // Conversión de DMS a Decimal
 const DMScoordenadas = document.getElementById("coordenadas").value.trim();
@@ -75,10 +75,12 @@ const DMScoordenadas = document.getElementById("coordenadas").value.trim();
 // 🔁 Función que detecta el formato de coordenadas y las convierte a decimales
 function convertirCoordenadas(DMScoordenadas) {
   // 🧪 Expresión regular para formato DMS: grados, minutos, segundos (ej. 20°39'34.9"N 103°20'58.6"W)
-  const dmsRegex = /(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([NSns])[\s,]+(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([EWew])/;
+  const dmsRegex =
+    /(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([NSns])[\s,]+(\d+)[°º]\s*(\d+)[']\s*([\d.]+)["]?\s*([EWew])/;
 
   // 🧪 Expresión regular para formato DM: grados y minutos (ej. 20°39.582'N 103°20.976'W)
-  const dmRegex = /(\d+)[°º]\s*([\d.]+)[']\s*([NSns])[\s,]+(\d+)[°º]\s*([\d.]+)[']\s*([EWew])/;
+  const dmRegex =
+    /(\d+)[°º]\s*([\d.]+)[']\s*([NSns])[\s,]+(\d+)[°º]\s*([\d.]+)[']\s*([EWew])/;
 
   // 🧪 Expresión regular para formato decimal (ej. 20.659694 -103.349611)
   const decRegex = /^([-+]?\d+(\.\d+)?)[\s,]+([-+]?\d+(\.\d+)?)/;
@@ -88,8 +90,14 @@ function convertirCoordenadas(DMScoordenadas) {
     const match = DMScoordenadas.match(dmsRegex);
 
     // 🎯 Convertimos latitud y longitud con fórmula: grados + minutos/60 + segundos/3600
-    let lat = parseFloat(match[1]) + parseFloat(match[2]) / 60 + parseFloat(match[3]) / 3600;
-    let lon = parseFloat(match[5]) + parseFloat(match[6]) / 60 + parseFloat(match[7]) / 3600;
+    let lat =
+      parseFloat(match[1]) +
+      parseFloat(match[2]) / 60 +
+      parseFloat(match[3]) / 3600;
+    let lon =
+      parseFloat(match[5]) +
+      parseFloat(match[6]) / 60 +
+      parseFloat(match[7]) / 3600;
 
     // 👇 Si es hemisferio sur o oeste, se vuelve negativo
     if (match[4].toUpperCase() === "S") lat *= -1;
@@ -120,6 +128,70 @@ function convertirCoordenadas(DMScoordenadas) {
   }
 
   // ⚠️ Si no coincide ningún formato, se muestra un mensaje de error
-  alert("Formato no reconocido. Ejemplos válidos:\n• DMS: 20°39'34.9\"N 103°20'58.6\"W\n• DM: 20°39.582'N 103°20.976'W\n• Decimal: 20.659694 -103.349611");
+  alert(
+    "Formato no reconocido. Ejemplos válidos:\n• DMS: 20°39'34.9\"N 103°20'58.6\"W\n• DM: 20°39.582'N 103°20.976'W\n• Decimal: 20.659694 -103.349611"
+  );
   return null;
 }
+
+document.getElementById("tipoFalla").addEventListener("change", function () {
+  const contenedor = document.getElementById("contenedorArchivos");
+  contenedor.innerHTML = ""; // limpia antes de volver a insertar
+
+  const tipo = document.getElementById("tipoFalla").value;
+
+  if (tipo === "TOTAL" || tipo === "PARCIAL") {
+    contenedor.insertAdjacentHTML(
+      "beforeend",
+      `
+    <label>Domicilios</label>
+    <input type="file" name="imageDomicilio" class="inputImagen" accept="image/*">
+    <br>
+    <img class="previewImagen" src="#" alt="Imagen" style="display: none; max-width: 1000px; max-height: 1000px;">
+    <br>
+    <label>MAPEO</label>
+    <input type="file" name="imageMapeo" class="inputImagen" accept="image/*">
+    <br>
+    <img class="previewImagen" src="#" alt="Imagen" style="display: none; max-width: 1000px; max-height: 1000px;">
+    <br>
+      `
+    );
+  } else if (tipo === "MCA") {
+    contenedor.insertAdjacentHTML(
+      "beforeend",
+      `
+    <label>Domicilios</label>
+    <input type="file" name="imageDomicilio" class="inputImagen" accept="image/*">
+    <br>
+    <img class="previewImagen" src="#" alt="Imagen" style="display: none; max-width: 1000px; max-height: 1000px;">
+    <br>
+    <label>MAPEO</label>
+    <input type="file" name="imageMapeo" class="inputImagen" accept="image/*">
+    <br>
+    <img class="previewImagen" src="#" alt="Imagen" style="display: none; max-width: 1000px; max-height: 1000px;">
+    <br>
+      `);
+  }
+});
+
+// Listener para mostrar previsualización de cualquier archivo cargado
+document.addEventListener("change", function (event) {
+  if (event.target && event.target.classList.contains('inputImagen')) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        // Encuentra la <img> justo debajo de este input
+        let img = event.target.nextElementSibling;
+        while (img && img.tagName !== 'IMG') {
+          img = img.nextElementSibling;
+        }
+        if (img) {
+          img.src = reader.result;
+          img.style.display = "block";
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+});

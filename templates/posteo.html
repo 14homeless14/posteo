@@ -7,132 +7,129 @@
   <title>Formulario de Atención de Falla</title>
   <link rel="stylesheet" href="/static/estilos.css" />
   <script src="/static/login.js"></script>
-  <script src="/static/botones.js"></script>
 </head>
 
 <body>
-  <heade class="encabezado-posteo">
-  <a href="/consulta" class="volver">← Volver</a>
-  <h1>Bienvenido a la página de posteo</h1>
-  </header>
+  <header class="encabezado-posteo">
+    <a href="/consulta" class="volver">← Volver</a>
+    <h1>Bienvenido a la página de posteo</h1>
+    </header>
 
-  <!-- Formulario de relleno manual -->
-  <form id="datosDePosteo" action="/posteo" method="POST">
-    <!-- Botón para abrir el diálogo -->
-    <button type="button" id="abrirDialogo" onclick="copiarTexto()" class="full-width">Copiar</button>
-    <!-- El cuadro de diálogo -->
-    <dialog id="miDialogo">
-      <pre id="contenidoDialogo" style="white-space: pre-wrap;"></pre>
-      <button onclick="document.getElementById('miDialogo').close()">Cerrar</button>
-    </dialog>
+    <!-- Formulario de relleno manual -->
+    <form id="datosDePosteo" action="/posteo" method="POST" enctype="multipart/form-data">
+      <!-- Botón para abrir el diálogo -->
+      <button type="button" id="abrirDialogo" onclick="copiarTexto()" class="full-width">Copiar</button>
+      <!-- El cuadro de diálogo -->
+      <dialog id="miDialogo">
+        <pre id="contenidoDialogo" style="white-space: pre-wrap;"></pre>
+        <button onclick="document.getElementById('miDialogo').close()">Cerrar</button>
+      </dialog>
 
-    <fieldset>
-      <legend>relleno manual</legend>
+      <fieldset>
+        <legend>relleno manual</legend>
 
-      <label for="tuNombre">Tu Nombre:</label>
-      <input type="text" id="tuNombre" name="tuNombre" value="{{ datos.nombre }}" />
+        <label for="tuNombre">Tu Nombre:</label>
+        <input type="text" id="tuNombre" name="tuNombre" value="{{ datos.nombre }}" />
 
-      <label for="tipoFalla">Tipo de Falla:</label>
-      <select id="tipoFalla" name="tipoFalla" required>
-        <option value="TOTAL">TOTAL</option>
-        <option value="PARCIAL">PARCIAL</option>
-        <option value="MCA">MCA</option>
-        <option value="Enlace">Enlace</option>
-        <option value="MCA REQ Serv">MCA REQ Serv</option>
-        <option value="SNR">SNR</option>
-        <option value="MASIVA">MASIVA</option>
-      </select>
-      <br />
-      <label for="folioOT">#Folio OT:</label>
-      <input type="text" id="folioOT" name="folioOT" required />
+        <label for="tipoFalla">Tipo de Falla:</label>
+        <select id="tipoFalla" name="tipoFalla" required>
+          <option value="" disabled selected>Selecciona una opción</option>
+          <option value="TOTAL">TOTAL</option>
+          <option value="PARCIAL">PARCIAL</option>
+          <option value="MCA">MCA</option>
+          <option value="Enlace">Enlace</option>
+          <option value="MCA REQ Serv">MCA REQ Serv</option>
+          <option value="SNR">SNR</option>
+          <option value="MASIVA">MASIVA</option>
+        </select>
+        <br />
+        <label for="folioOT">#Folio OT:</label>
+        <input type="text" id="folioOT" name="folioOT" required />
 
-      <label for="clientesAfectados">Clientes Afectados:</label>
-      <input type="text" id="clientesAfectados" name="clientesAfectados" />
+        <label for="clientesAfectados">Clientes Afectados:</label>
+        <input type="text" id="clientesAfectados" name="clientesAfectados" />
 
-      <label for="coordenadas">Coordenadas:</label>
-      <input type="text" id="coordenadas" name="coordenadas" required />
+        <label for="coordenadas">Coordenadas:</label>
+        <input type="text" id="coordenadas" name="coordenadas" required />
 
-      <label for="ctcHub">CTC o Hub:</label>
-      <input type="text" id="ctcHub" name="ctcHub" placeholder="CTC o Hub:" />
+        <label for="ctcHub">CTC o Hub:</label>
+        <input type="text" id="ctcHub" name="ctcHub" placeholder="CTC o Hub:" />
 
-      <label for="alarma">Alarma:</label>
-      <input type="text" id="alarma" name="alarma" placeholder="Alarma" />
+        <label for="alarma">Alarma:</label>
+        <input type="text" id="alarma" name="alarma" placeholder="Alarma" />
 
-      <label for="datosAdicionales">Datos Adicionales:</label>
-      <textarea id="datosAdicionales" name="datosAdicionales" rows="4"></textarea>
+        <label for="datosAdicionales">Datos Adicionales:</label>
+        <textarea id="datosAdicionales" name="datosAdicionales" rows="4"></textarea>
 
-      <label for="status">validacion:</label>
-      <select id="status" name="status">
-        <option value="1">De su apoyo para la atención</option>
-        <option value="2">
-          Cliente confirma que cuenta con energía eléctrica
-        </option>
-        <option value="3">Se confirma ausencia de CFE</option>
-        <option value="4">
-          Cliente no contesta de su apoyo para la atención
-        </option>
-        <option value="5">
-          Zona conflictiva de su apoyo para la atención a primera hora de la
-          mañana
-        </option>
-        <option value="6">
-          Sin personal nocturno de su apoyo para la atención a primera hora de
-          la mañana
-        </option>
-        <option value="7">Mal clima en la zona</option>
-        <option value="8">Clientes no se encuentran en domicilio</option>
-      </select>
-    </fieldset>
+        <label for="status">validacion:</label>
+        <select id="status" name="status">
+          <option value="" disabled selected>Selecciona una opción</option>
+          <option value="De su apoyo para la atención">De su apoyo para la atención</option>
+          <option value="Cliente confirma que cuenta con energía eléctrica">
+            Cliente confirma que cuenta con energía eléctrica
+          </option>
+          <option value="Se confirma ausencia de CFE">Se confirma ausencia de CFE</option>
+          <option value="validacion no exitosa">validacion no exitosa</option>
+          <option value="Zona conflictiva">
+            Zona conflictiva de su apoyo para la atención a primera hora de la
+            mañana
+          </option>
+          <option value="Sin personal nocturno">
+            Sin personal nocturno de su apoyo para la atención a primera hora de
+            la mañana
+          </option>
+          <option value="Mal clima en la zona">Mal clima en la zona</option>
+          <option value="Clientes no se encuentran en domicilio">Clientes no se encuentran en domicilio</option>
+        </select>
+      </fieldset>
+      
 
-    <fieldset>
-      <legend>relleno automatico</legend>
-      <label for="fechaDetectadaOTEnSGA">Fecha de generacion y hora de generacion de OT:</label>
-      <input type="text" id="fechaDetectadaOTEnSGA" name="fechaDetectadaOTEnSGA" placeholder="YYYY-MM-DD HH:mm:ss"
-        value="{{ datos.fechaDetectadaOTEnSGA }}" readonly />
+      <fieldset>
+        <legend>relleno automatico</legend>
+        <label for="fechaDetectadaOTEnSGA">Fecha de generacion y hora de generacion de OT:</label>
+        <input type="text" id="fechaDetectadaOTEnSGA" name="fechaDetectadaOTEnSGA" placeholder="YYYY-MM-DD HH:mm:ss"
+          value="{{ datos.fechaDetectadaOTEnSGA }}" readonly />
 
-      <label for="tiempoDeOT">difenrencia entre OT y TT </label>
-      <input type="text" id="tiempoDeOT" name="tiempoDeOT" placeholder="se rellena solo" value="{{ datos.tiempoDeTTyOT }}"
-        readonly required />    
+        <label for="tiempoDeOT">difenrencia entre OT y TT </label>
+        <input type="text" id="tiempoDeOT" name="tiempoDeOT" value="{{ datos.tiempoDeTTyOT }}" readonly required />
 
-      <label for="numSucursal">Número de Sucursal:</label>
-      <input type="text" id="numSucursal" name="numSucursal" placeholder="se rellena solo"
-        value="{{ datos.numSucursal }}" readonly />
+        <label for="numSucursal">Número de Sucursal:</label>
+        <input type="text" id="numSucursal" name="numSucursal" value="{{ datos.numSucursal }}" readonly />
 
-      <label for="sucursal">Sucursal:</label>
-      <input type="text" id="sucursal" name="sucursal" placeholder="se rellena solo" value="{{ datos.sucursal }}"
-        readonly />
+        <label for="sucursal">Sucursal:</label>
+        <input type="text" id="sucursal" name="sucursal" value="{{ datos.sucursal }}" readonly />
 
-      <label for="tituloFalla">Título de la Falla:</label>
-      <input type="text" id="tituloFalla" name="tituloFalla" placeholder="se rellena solo"
-        value="{{ datos.tituloFalla }}" readonly />
+        <label for="tituloFalla">Título de la Falla:</label>
+        <input type="text" id="tituloFalla" name="tituloFalla" value="{{ datos.tituloFalla }}" />
 
-      <!--placeholder="HH:MM:SS"-->
+        <label for="numeroTT">#Ticket Cherwell:</label>
+        <input type="text" id="numeroTT" name="numeroTT" value="{{ datos.numeroTT }}" readonly />
 
-      <label for="numeroTT">#Ticket Cherwell:</label>
-      <input type="text" id="numeroTT" name="numeroTT" placeholder="se rellena solo" value="{{ datos.numeroTT }}"
-        readonly />
+        <label for="nodo">#Nodo o Puerto:</label>
+        <input type="text" id="nodo" name="nodo" value="{{ datos.nodo }}" required />
 
-      <label for="nodo">#Nodo o Puerto:</label>
-      <input type="text" id="nodo" name="nodo" placeholder="se rellena solo" value="{{ datos.nodo }}" readonly />
+        <label for="fechaAlarm">Fecha de Creación y hora de creacion TT:</label>
+        <input type="text" id="fechaAlarm" name="fechaAlarm" value="{{ datos.fechaAlarm }}" readonly />
 
-      <label for="fechaAlarm">Fecha de Creación y hora de creacion TT:</label>
-      <input type="text" id="fechaAlarm" name="fechaAlarm" placeholder="se rellena solo" value="{{ datos.fechaAlarm }}"
-        readonly />
+        <label for="tiempoDeTT">Tiempo Trascurrio desde generacion de TT</label>
+        <input type="text" id="tiempoDeTT" name="tiempoDeTT" value="{{ datos.tiempoDeTT }}" readonly required />
 
-      <label for="tiempoDeTT">Tiempo Trascurrio desde generacion de TT</label>
-      <input type="text" id="tiempoDeTT" name="tiempoDeTT" placeholder="se rellena solo" value="{{ datos.tiempoDeTT }}"
-        readonly required />  
+        <label for="sga">Datos SGA:</label>
+        <textarea id="sga" name="sga" rows="1">{{ datos.sga }}</textarea>
+        <br />
+        <textarea id="descripcion" name="descripcion" rows="6" style="display: none;">{{ datos.descripcion }}</textarea>
+      </fieldset>
+      
 
-      <label for="sga">Datos SGA:</label>
-      <textarea id="sga" name="sga" rows="1" readonly>{{ datos.sga }}</textarea>
-      <br />
-      <textarea id="descripcion" name="descripcion" rows="2" style="display: none;"
-        readonly>{{ datos.descripcion }}</textarea>
-    </fieldset>
+    </form>
+    <div id="contenedorArchivos"></div>
+    
+
     <iframe width="425" height="350"
-        src="https://www.google.com/maps/embed?origin=mfe&pb=!1m14!1m8!1m3!1d24637.230090345016!2d-0.382204!3d39.477148!3m2!1i1024!2i768!4f13.1!3m3!1m2!2sies+abastos!4s11271517402525668942!6i14!3m1!1ses!5m1!1ses">
+      src="https://www.google.com/maps/embed?origin=mfe&pb=!1m14!1m8!1m3!1d24637.230090345016!2d-0.382204!3d39.477148!3m2!1i1024!2i768!4f13.1!3m3!1m2!2sies+abastos!4s11271517402525668942!6i14!3m1!1ses!5m1!1ses">
     </iframe>
-  </form>
-</body>
 
+
+</body>
+<script src="/static/botones.js"></script>
 </html>
